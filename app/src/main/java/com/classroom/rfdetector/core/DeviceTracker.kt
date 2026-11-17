@@ -46,9 +46,10 @@ class DeviceTracker {
         if (!late) t.details.putAll(obs.details)
         if (!late || t.name == null) obs.name?.takeIf { it.isNotBlank() }?.let { t.name = it }
         if (!late) t.hidden = obs.hidden
+        if (!late && t.periods.size > previousPeriodCount) t.ema = null
         obs.rssi?.takeIf { it in VALID_RSSI }?.let { r ->
             if (!late) {
-                t.ema = RssiFilter.ema(if (t.periods.size > previousPeriodCount) null else t.ema, r)
+                t.ema = RssiFilter.ema(t.ema, r)
                 t.tx = obs.txPower?.takeIf { it in -100..20 && it != 127 }?.toDouble() ?: t.tx
             }
             t.peakRssi = maxOf(t.peakRssi ?: r, r)
