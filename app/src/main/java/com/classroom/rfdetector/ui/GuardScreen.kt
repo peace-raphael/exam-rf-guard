@@ -442,7 +442,7 @@ private fun LazyListScope.groupRows(group: SignalGroup, open: Boolean, onToggle:
         }) { if (single) onFind(group.strongest.trackingKey) else onToggle() }
     }
     if (open && !single) {
-        item(key = "note-${group.key}") { Text("같은 종류라 어느 것이 새로 온 것인지는 구분할 수 없습니다. 가까이 잡히는 것부터 확인하세요.", color = RfColors.textDim, style = MaterialTheme.typography.bodySmall) }
+        item(key = "note-${group.key}") { Text("같은 묶음으로 잡혀 어느 것이 새로 온 것인지는 구분할 수 없습니다. 가까이 잡히는 것부터 확인하세요.", color = RfColors.textDim, style = MaterialTheme.typography.bodySmall) }
         items(group.devices, key = { "member-${it.trackingKey}" }) { device ->
             Box(Modifier.padding(start = 18.dp)) { SignalCard(device) { onFind(device.trackingKey) } }
         }
