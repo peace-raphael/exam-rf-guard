@@ -136,12 +136,24 @@ class GuardFlowTest {
         } finally { vm.shutdown() }
     }
 
+    private fun assertEmergencyAlertGuidance() {
+        compose.onNode(hasText("비행기 모드에서는 긴급재난문자", substring = true) and
+            hasText("받지 못", substring = true) and hasText("시험장 방송", substring = true)).assertExists()
+    }
+
+    @Test fun airplaneSetupWarnsAboutEmergencyAlerts() {
+        compose.setContent { AppRfTheme { SetupFlow(listOf(SetupStep.AIRPLANE), {}, {}, {}) } }
+        compose.onNodeWithText("비행기 모드 설정 열기").assertExists()
+        assertEmergencyAlertGuidance()
+    }
+
     @Test fun guideExplainsWhatTheAppCannotCatch() {
         val vm = launch()
         try {
             compose.onNodeWithText("안내").performClick()
             compose.onNodeWithText("이 앱이 못 잡는 것").assertExists()
             compose.onNodeWithText("제대로 잡히는지 확인하기").assertExists()
+            assertEmergencyAlertGuidance()
             saveScreen("guide")
             compose.onNodeWithContentDescription("돌아가기").performClick()
             compose.onNodeWithText("빈 교실 측정 시작").assertIsDisplayed()

@@ -583,7 +583,7 @@ private fun openSilenceAccess(context: android.content.Context) {
 }
 
 /** 측정을 시작하기 전에 갖춰야 하는 것. 이 순서대로 하나씩 마친다. 비행기 모드를 켜면 와이파이·블루투스가 꺼지므로 그 뒤에 다시 켠다. */
-private enum class SetupStep(val title: String, val body: String, val action: String) {
+internal enum class SetupStep(val title: String, val body: String, val action: String) {
     PERMISSIONS("근처 기기·위치 권한 허용", "이어폰·시계·휴대폰의 블루투스 신호와 와이파이 목록을 받는 데만 씁니다. 감독관의 위치를 기록하지 않고, 기록은 이 휴대폰 안에만 저장합니다.", "권한 허용"),
     SILENCE("방해 금지 권한 허용", "측정과 감시 중에 전화·알림·알람이 울리지 않게 자동으로 무음으로 바꾸고, 끝내면 원래대로 돌립니다.", "방해 금지 권한 설정 열기"),
     AIRPLANE("비행기 모드 켜기", "전화나 문자가 오면 감시 화면이 가려지고 감시가 멈춥니다. 비행기 모드에서는 긴급재난문자도 받지 못하니 시험장 방송 등 다른 경보 수단을 확인해 두세요.", "비행기 모드 설정 열기"),
@@ -593,7 +593,7 @@ private enum class SetupStep(val title: String, val body: String, val action: St
 }
 
 @Composable
-private fun SetupFlow(missing: List<SetupStep>, onRecheck: () -> Unit, onRequestPermissions: () -> Unit, onOpenSettings: () -> Unit) {
+internal fun SetupFlow(missing: List<SetupStep>, onRecheck: () -> Unit, onRequestPermissions: () -> Unit, onOpenSettings: () -> Unit) {
     val context = LocalContext.current
     // 알림창에서 켠 블루투스처럼 조금 늦게 반영되는 설정도 놓치지 않게 계속 다시 확인한다.
     LaunchedEffect(Unit) { while (true) { onRecheck(); kotlinx.coroutines.delay(1_000) } }
